@@ -3,8 +3,18 @@ const router = express.Router()
 const models = require("../models")
 
 router.get("/", async (req, res) => {
-  const listOfLocation = await models.Location.findAll({ order: [['id', 'DESC']] })
-  res.json(listOfLocation)
+  const limit = parseInt(req.query.limit) || 10
+  const offset = parseInt(req.query.offset) || 0
+
+  const listOfLocation = await models.Location.findAll({
+    order: [['id', 'DESC']],
+    limit,
+    offset
+  })
+
+  const count = await models.Location.count()
+
+  res.json({ locations: listOfLocation, totalPage: Math.ceil(count / limit) })
 })
 
 router.get("/byId/:id", async (req, res) => {
