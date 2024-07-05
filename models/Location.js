@@ -1,22 +1,26 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  const Location = sequelize.define("Location", {
-    nom_loc: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    design_voiture: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    nb_jours: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    taux_journalier: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-  })
-
-  return Location
-}
+  class Location extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Location.init({
+    nom_loc: DataTypes.STRING,
+    design_voiture: DataTypes.STRING,
+    nb_jours: DataTypes.INTEGER,
+    taux_journalier: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'Location',
+  });
+  return Location;
+};
