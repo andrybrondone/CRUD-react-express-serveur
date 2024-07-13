@@ -11,7 +11,17 @@ const db = {};
 
 let sequelize;
 if (config.url) {
-  sequelize = new Sequelize(config.url, config);
+  sequelize = new Sequelize(config.url, {
+    dialect: 'postgres',
+    logging: console.log,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      },
+      connectTimeout: 60000 // 60 secondes
+    }
+  });
 } else if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
